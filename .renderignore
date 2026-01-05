@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Data (if large, consider using Render disk or external storage)
+# Uncomment if model artifacts are too large for free tier
+# backend/app/artifacts/
+# data/processed/
+
+# Reports
+reports/*.png
+reports/*.json
