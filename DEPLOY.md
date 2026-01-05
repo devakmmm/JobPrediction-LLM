@@ -118,20 +118,31 @@ async def read_root():
 3. Deploy only the backend service
 4. Point frontend build to the backend URL
 
+## Render Health Check (Built-in)
+
+**Already configured!** The `render.yaml` file includes:
+- `healthCheckPath: /health`
+- This tells Render to monitor your service health
+- Helps with automatic restarts if service fails
+- Can be configured in Render dashboard: Settings → Health Check Path
+
+**Important:** Render's health check monitors service health but **doesn't prevent sleep on free tier**. The service will still sleep after 15 minutes of inactivity.
+
 ## Prevent Service from Sleeping (Keep-Alive Setup)
 
-Render's free tier sleeps after 15 minutes. **See `scripts/keep_alive_instructions.md` for detailed setup.**
+For 24/7 uptime on free tier, combine Render's health check with an external pinger:
 
 **Quick Setup (GitHub Actions - Recommended):**
 1. Add secret to GitHub: `RENDER_URL=https://your-backend.onrender.com`
 2. The `.github/workflows/keep-alive.yml` workflow will auto-ping every 10 minutes
-3. This keeps your service awake 24/7 on free tier!
+3. Pings the `/health` endpoint that Render monitors
+4. This keeps your service awake 24/7 on free tier!
 
 **Alternative: UptimeRobot (Free):**
 - Sign up at uptimerobot.com
 - Add monitor: `https://your-backend.onrender.com/health`
 - Set interval: 5 minutes
-- Done!
+- Uses Render's health check endpoint
 
 ## Optimizations for Free Tier
 

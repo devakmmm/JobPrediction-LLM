@@ -10,7 +10,10 @@ services:
         value: 3.12.0
       - key: PORT
         value: 10000
+    # Health check configuration - Render will check this endpoint
     healthCheckPath: /health
+    # Note: Free tier still sleeps after 15 min, but health check helps with reliability
+    # Combine with external pinger (GitHub Actions/UptimeRobot) for best results
 
   - type: web
     name: job-market-forecaster-frontend
