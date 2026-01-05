@@ -66,6 +66,10 @@ data/processed/*.csv
 # Backend
 backend/app/artifacts/*
 !backend/app/artifacts/.gitkeep
+# Allow model artifacts to be committed (needed for deployment)
+!backend/app/artifacts/**/*.pt
+!backend/app/artifacts/**/*.pkl
+!backend/app/artifacts/**/*.json
 backend/__pycache__/
 
 # Frontend

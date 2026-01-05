@@ -1,0 +1,41 @@
+{
+  "role": "Software Engineer",
+  "location": "New York, NY",
+  "window_size": 12,
+  "model_type": "lstm",
+  "model_config": {
+    "input_size": 1,
+    "hidden_size": 64,
+    "num_layers": 2
+  },
+  "trained_at": "2026-01-05T00:52:54.164590",
+  "train_date_range": {
+    "start": "2022-01-03",
+    "end": "2024-01-29"
+  },
+  "metrics": {
+    "lstm": {
+      "rmse": 1.0882201194763184,
+      "mape": 35.30621528625488,
+      "directional_accuracy": 45.45454545454545
+    },
+    "baselines": {
+      "naive": {
+        "rmse": 58.45938761225608,
+        "mape": 21.61431014471347,
+        "directional_accuracy": 52.17391304347826
+      },
+      "moving_average": {
+        "rmse": 57.967663399519566,
+        "mape": 21.424972729604082,
+        "directional_accuracy": 52.17391304347826
+      }
+    },
+    "model_config": {
+      "window_size": 12,
+      "hidden_size": 64,
+      "num_layers": 2,
+      "epochs_trained": 14
+    }
+  }
+}
