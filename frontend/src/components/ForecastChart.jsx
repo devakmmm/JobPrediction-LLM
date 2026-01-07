@@ -55,7 +55,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
   return (
     <ResponsiveContainer width="100%" height={500}>
       <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(231, 25, 57, 0.12)" opacity={0.6} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(233, 23, 55, 0.12)" opacity={0.6} />
         <XAxis
           dataKey="week_start"
           angle={0}
@@ -73,7 +73,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
         <Tooltip
           contentStyle={{
             backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            border: '1px solid rgba(231, 25, 57, 0.25)',
+            border: '1px solid rgba(233, 23, 55, 0.25)',
             borderRadius: '8px',
             color: '#1f0d0f',
             padding: '10px',
