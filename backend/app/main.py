@@ -29,14 +29,13 @@ cors_origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "http://localhost:5174",
-    # Add your Render frontend URL here after deployment
-    # "https://your-frontend.onrender.com",
+    # Add your deployed Vercel frontend URL below after first deploy
+    "https://jobprediction-llm-frontend.vercel.app",  # Example, update to your actual Vercel URL
 ]
 
-# Also allow any Render frontend (for flexibility during development)
+# On Render, allow all origins for flexibility (or restrict to Vercel domain for security)
 if os.getenv("RENDER"):
-    # On Render, allow all origins or specific Render subdomain
-    cors_origins.append("*")
+    cors_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
