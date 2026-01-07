@@ -69,10 +69,9 @@ export default function ProjectExplanation({ role, location }) {
               The chart displays:
             </p>
             <ul>
-              <li><strong>Blue line:</strong> Historical training data (70% of dataset)</li>
-              <li><strong>Green line:</strong> Validation data (15%) - used for model tuning</li>
-              <li><strong>Orange line:</strong> Test data (15%) - final evaluation, model never saw this during training</li>
-              <li><strong>Red dashed line:</strong> LSTM model predictions for the next 8 weeks</li>
+              <li><strong>Historical series:</strong> Weekly observations rolled up to monthly totals</li>
+              <li><strong>Forecast series:</strong> Monthly projection derived from weekly LSTM predictions</li>
+              <li><strong>Baseline (optional):</strong> Simple reference line when enabled</li>
             </ul>
             <p className="note">
               <strong>Note:</strong> The model achieved RMSE of ~1.0 on the test set (significantly better than 

@@ -33,7 +33,6 @@ export default function ForecastChart({ data, showBaseline = false }) {
     ...data.history.map(point => ({
       week_start: new Date(point.week_start).toLocaleDateString('en-US', {
         month: 'short',
-        day: 'numeric',
         year: 'numeric'
       }),
       date: point.week_start,
@@ -44,7 +43,6 @@ export default function ForecastChart({ data, showBaseline = false }) {
     ...data.forecast.map(point => ({
       week_start: new Date(point.week_start).toLocaleDateString('en-US', {
         month: 'short',
-        day: 'numeric',
         year: 'numeric'
       }),
       date: point.week_start,
@@ -54,24 +52,21 @@ export default function ForecastChart({ data, showBaseline = false }) {
     }))
   ];
 
-  // Find the split point between history and forecast
-  const splitIndex = data.history.length;
-
   return (
     <ResponsiveContainer width="100%" height={500}>
       <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(231, 25, 57, 0.12)" opacity={0.6} />
         <XAxis
           dataKey="week_start"
-          angle={-45}
-          textAnchor="end"
-          height={100}
+          angle={0}
+          textAnchor="middle"
+          height={50}
           interval="preserveStartEnd"
           stroke="var(--text-secondary)"
           style={{ fontSize: '12px', fontFamily: 'JetBrains Mono, monospace' }}
         />
         <YAxis
-          label={{ value: 'Job Postings Count', angle: -90, position: 'insideLeft', style: { fill: 'var(--text-secondary)', fontSize: '14px', fontFamily: 'JetBrains Mono, monospace' } }}
+          label={{ value: 'Monthly postings', angle: -90, position: 'insideLeft', style: { fill: 'var(--text-secondary)', fontSize: '14px', fontFamily: 'JetBrains Mono, monospace' } }}
           stroke="var(--text-secondary)"
           style={{ fontSize: '12px', fontFamily: 'JetBrains Mono, monospace' }}
         />
@@ -88,7 +83,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
             if (value === null) return '';
             return [Math.round(value * 100) / 100, name];
           }}
-          labelFormatter={(label) => `Week: ${label}`}
+          labelFormatter={(label) => `Month: ${label}`}
           labelStyle={{ color: 'var(--accent-primary)', fontWeight: 600 }}
         />
         <Legend 
@@ -97,16 +92,17 @@ export default function ForecastChart({ data, showBaseline = false }) {
           iconSize={16}
         />
         
-        {/* Vertical line to separate history and forecast */}
-        <Line
-          type="monotone"
-          dataKey="Historical"
-          stroke="var(--accent-primary)"
-          strokeWidth={3}
-          dot={false}
-          activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
-          connectNulls={false}
-        />
+        {data.history.length > 0 && (
+          <Line
+            type="monotone"
+            dataKey="Historical"
+            stroke="var(--accent-primary)"
+            strokeWidth={3}
+            dot={false}
+            activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
+            connectNulls={false}
+          />
+        )}
         
         <Line
           type="monotone"

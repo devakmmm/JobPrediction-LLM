@@ -6,6 +6,8 @@ import './App.css';
 
 const COUNT_FORMATTER = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 const PERCENT_FORMATTER = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1, signDisplay: 'always' });
+const SIGNED_COUNT_FORMATTER = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1, signDisplay: 'always' });
+const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' });
 
 const formatCount = (value) => {
   if (value === null || value === undefined || Number.isNaN(value)) {
@@ -21,6 +23,13 @@ const formatPercent = (value) => {
   return `${PERCENT_FORMATTER.format(value)}%`;
 };
 
+const formatSignedCount = (value) => {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return 'n/a';
+  }
+  return SIGNED_COUNT_FORMATTER.format(value);
+};
+
 const formatDate = (value) => {
   if (!value) {
     return 'n/a';
@@ -34,6 +43,49 @@ const formatDate = (value) => {
     day: '2-digit',
     year: 'numeric'
   });
+};
+
+const formatMonth = (value) => {
+  if (!value) {
+    return 'n/a';
+  }
+  const parsed = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) {
+    return String(value);
+  }
+  return MONTH_FORMATTER.format(parsed);
+};
+
+const toISODate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const toMonthlySeries = (points) => {
+  const buckets = new Map();
+  points.forEach((point) => {
+    if (!point?.week_start) {
+      return;
+    }
+    const parsed = new Date(`${point.week_start}T00:00:00`);
+    if (Number.isNaN(parsed.getTime())) {
+      return;
+    }
+    const monthStart = new Date(parsed.getFullYear(), parsed.getMonth(), 1);
+    const key = toISODate(monthStart);
+    const existing = buckets.get(key) || { date: monthStart, total: 0 };
+    existing.total += point.value;
+    buckets.set(key, existing);
+  });
+
+  return Array.from(buckets.values())
+    .sort((a, b) => a.date - b.date)
+    .map((bucket) => ({
+      week_start: toISODate(bucket.date),
+      value: bucket.total
+    }));
 };
 
 const average = (values) => {
@@ -66,11 +118,13 @@ const SAMPLE_LOCATIONS = [
   'Remote'
 ];
 
+const FORECAST_HORIZON_WEEKS = 52;
+const FORECAST_WINDOW_START = new Date(2025, 5, 1);
+const FORECAST_WINDOW_END = new Date(2026, 5, 30);
+
 function App() {
   const [role, setRole] = useState(SAMPLE_ROLES[0]);
   const [location, setLocation] = useState(SAMPLE_LOCATIONS[0]);
-  // Default to 52 weeks for Software Engineer + New York, NY (June 2025 to June 2026)
-  const [horizon, setHorizon] = useState(52);
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -91,8 +145,8 @@ function App() {
     setError(null);
 
     try {
-      console.log('Fetching forecast for:', { role, location, horizon });
-      const data = await getForecast(role, location, horizon);
+      console.log('Fetching forecast for:', { role, location, horizon: FORECAST_HORIZON_WEEKS });
+      const data = await getForecast(role, location, FORECAST_HORIZON_WEEKS);
       console.log('Forecast data received:', data);
       setForecastData(data);
       setError(null); // Clear any previous errors
@@ -112,26 +166,36 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run on mount
 
-  const history = forecastData?.history ?? [];
-  const forecast = forecastData?.forecast ?? [];
+  const rawHistory = forecastData?.history ?? [];
+  const rawForecast = forecastData?.forecast ?? [];
   const model = forecastData?.model ?? {};
+  const history = toMonthlySeries(rawHistory);
+  const forecast = toMonthlySeries(rawForecast).filter((point) => {
+    const parsed = new Date(`${point.week_start}T00:00:00`);
+    return parsed >= FORECAST_WINDOW_START && parsed <= FORECAST_WINDOW_END;
+  });
+  const chartHistory = history.filter((point) => {
+    const parsed = new Date(`${point.week_start}T00:00:00`);
+    return parsed >= FORECAST_WINDOW_START && parsed <= FORECAST_WINDOW_END;
+  });
+  const chartData = forecastData ? { ...forecastData, history: chartHistory, forecast } : null;
   const historyValues = history.map((point) => point.value);
 
   const latestPoint = history[history.length - 1];
   const latestValue = latestPoint ? latestPoint.value : null;
   const latestDate = latestPoint ? latestPoint.week_start : null;
 
-  const recentAverage = average(history.slice(-12).map((point) => point.value));
+  const recentAverage = average(history.slice(-3).map((point) => point.value));
   const historyMin = historyValues.length ? Math.min(...historyValues) : null;
   const historyMax = historyValues.length ? Math.max(...historyValues) : null;
   const volatility = standardDeviation(historyValues);
 
   const historySpan = history.length
-    ? `${formatDate(history[0].week_start)} to ${formatDate(history[history.length - 1].week_start)}`
+    ? `${formatMonth(history[0].week_start)} to ${formatMonth(history[history.length - 1].week_start)}`
     : 'n/a';
 
   const forecastSpan = forecast.length
-    ? `${formatDate(forecast[0].week_start)} to ${formatDate(forecast[forecast.length - 1].week_start)}`
+    ? `${formatMonth(forecast[0].week_start)} to ${formatMonth(forecast[forecast.length - 1].week_start)}`
     : 'n/a';
 
   const forecastStart = forecast[0];
@@ -157,7 +221,7 @@ function App() {
   const modelWindow = model.window ? `${model.window} weeks` : 'n/a';
   const trainedOn = formatDate(model.trained_on);
 
-  const forecastWeeks = forecast.length ? forecast.length : horizon;
+  const forecastMonths = forecast.length;
   const historyRangeLabel = historyMin !== null && historyMax !== null
     ? `${formatCount(historyMin)} to ${formatCount(historyMax)}`
     : 'n/a';
@@ -168,6 +232,11 @@ function App() {
   const apiStatusClass = apiHealth === null ? 'pending' : apiHealth ? 'online' : 'offline';
   const apiStatusLabel = apiHealth === null ? 'Checking' : apiHealth ? 'Online' : 'Offline';
   const telemetryStatus = loading ? 'Updating' : 'Live';
+  const forecastWindowLabel = forecastSpan !== 'n/a' ? forecastSpan : 'Jun 2025 to Jun 2026';
+  const monthlyChanges = forecast.map((point, index) => ({
+    ...point,
+    change: index === 0 ? null : point.value - forecast[index - 1].value
+  }));
 
   return (
     <div className="app">
@@ -208,17 +277,17 @@ function App() {
             <div className="overview-chips">
               <span className="overview-chip">Role: {role}</span>
               <span className="overview-chip">Location: {location}</span>
-              <span className="overview-chip">Horizon: {horizon} weeks</span>
+              <span className="overview-chip">Window: {forecastWindowLabel}</span>
             </div>
           </div>
           <div className="stats-grid">
             <div className="stat-card">
-              <span className="stat-label">Latest weekly volume</span>
+              <span className="stat-label">Latest monthly volume</span>
               <span className="stat-value">{formatCount(latestValue)}</span>
-              <span className="stat-sub">as of {formatDate(latestDate)}</span>
+              <span className="stat-sub">as of {formatMonth(latestDate)}</span>
             </div>
             <div className="stat-card">
-              <span className="stat-label">12 week average</span>
+              <span className="stat-label">3 month average</span>
               <span className="stat-value">{formatCount(recentAverage)}</span>
               <span className="stat-sub">rolling mean</span>
             </div>
@@ -228,9 +297,9 @@ function App() {
               <span className="stat-sub">{forecastTrendDetail}</span>
             </div>
             <div className="stat-card">
-              <span className="stat-label">Forecast horizon</span>
-              <span className="stat-value">{forecastWeeks} weeks</span>
-              <span className="stat-sub">{forecastSpan}</span>
+              <span className="stat-label">Forecast window</span>
+              <span className="stat-value">{forecastMonths ? `${forecastMonths} months` : 'n/a'}</span>
+              <span className="stat-sub">{forecastWindowLabel}</span>
             </div>
           </div>
         </section>
@@ -240,7 +309,7 @@ function App() {
             <div className="panel-header">
               <div>
                 <h3>Query Controls</h3>
-                <p>Choose the target role, market, and horizon.</p>
+                <p>Choose the target role and market.</p>
               </div>
               <span className={`panel-chip ${loading ? 'busy' : ''}`}>{loading ? 'Busy' : 'Ready'}</span>
             </div>
@@ -271,19 +340,6 @@ function App() {
                     <option key={l} value={l}>{l}</option>
                   ))}
                 </select>
-              </div>
-
-              <div className="control-group">
-                <label htmlFor="horizon">Forecast horizon (weeks)</label>
-                <input
-                  id="horizon"
-                  type="number"
-                  min="1"
-                  max="52"
-                  value={horizon}
-                  onChange={(e) => setHorizon(parseInt(e.target.value) || 8)}
-                  disabled={loading}
-                />
               </div>
 
               <div className="control-group">
@@ -324,11 +380,11 @@ function App() {
               <div className="telemetry-item">
                 <span className="telemetry-label">Data source</span>
                 <span className="telemetry-value">USAJOBS weekly</span>
-                <span className="telemetry-sub">federal listings feed</span>
+                <span className="telemetry-sub">monthly rollup</span>
               </div>
               <div className="telemetry-item">
                 <span className="telemetry-label">History coverage</span>
-                <span className="telemetry-value">{history.length ? `${history.length} weeks` : 'n/a'}</span>
+                <span className="telemetry-value">{history.length ? `${history.length} months` : 'n/a'}</span>
                 <span className="telemetry-sub">{historySpan}</span>
               </div>
               <div className="telemetry-item">
@@ -367,19 +423,34 @@ function App() {
 
         <ProjectExplanation role={role} location={location} />
 
-        {forecastData && (
+        {chartData && (
           <div className="chart-container">
             <div className="chart-header">
               <h2>
-                {forecastData.role} - {forecastData.location}
+                {chartData.role} - {chartData.location}
               </h2>
               <div className="model-info">
                 <small>
-                  Model: {forecastData.model.type.toUpperCase()} (Window: {forecastData.model.window} weeks)
+                  Model: {chartData.model.type.toUpperCase()} (Window: {chartData.model.window} weeks)
                 </small>
               </div>
             </div>
-            <ForecastChart data={forecastData} showBaseline={showBaseline} />
+            <ForecastChart data={chartData} showBaseline={showBaseline} />
+            {monthlyChanges.length ? (
+              <div className="monthly-change">
+                <h3>Monthly change (Jun 2025 to Jun 2026)</h3>
+                <div className="monthly-change-grid">
+                  {monthlyChanges.map((month, index) => (
+                    <div className="monthly-change-item" key={month.week_start}>
+                      <span className="monthly-change-label">{formatMonth(month.week_start)}</span>
+                      <span className="monthly-change-value">
+                        {index === 0 ? 'Start' : formatSignedCount(month.change)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         )}
       </main>
