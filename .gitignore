@@ -62,6 +62,9 @@ data/raw/*.json
 !data/raw/.gitkeep
 data/processed/*.csv
 !data/processed/.gitkeep
+!data/processed/software_engineer_new_york_ny.csv
+!data/processed/data_scientist_san_francisco_ca.csv
+!data/processed/product_manager_remote.csv
 
 # Backend
 backend/app/artifacts/*
