@@ -7,22 +7,22 @@
 }
 
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #fff5f5;
-  --bg-tertiary: #fffafa;
-  --bg-glass: rgba(255, 255, 255, 0.96);
-  --accent-primary: #e71939;
-  --accent-secondary: #e71939;
-  --accent-tertiary: #e71939;
-  --accent-warning: #e71939;
+  --bg-primary: #fff1f1;
+  --bg-secondary: #ffe7ea;
+  --bg-tertiary: #fff6f6;
+  --bg-glass: rgba(255, 241, 241, 0.96);
+  --accent-primary: #e91737;
+  --accent-secondary: #e91737;
+  --accent-tertiary: #e91737;
+  --accent-warning: #e91737;
   --text-primary: #1f0d0f;
   --text-secondary: #4b2a2f;
   --text-muted: #7a4b52;
-  --border-color: rgba(231, 25, 57, 0.25);
-  --border-soft: rgba(231, 25, 57, 0.18);
-  --shadow-soft: 0 10px 24px rgba(231, 25, 57, 0.08);
-  --shadow-strong: 0 18px 40px rgba(231, 25, 57, 0.12);
-  --glow: 0 0 24px rgba(231, 25, 57, 0.2);
+  --border-color: rgba(233, 23, 55, 0.25);
+  --border-soft: rgba(233, 23, 55, 0.18);
+  --shadow-soft: 0 10px 24px rgba(233, 23, 55, 0.08);
+  --shadow-strong: 0 18px 40px rgba(233, 23, 55, 0.12);
+  --glow: 0 0 24px rgba(233, 23, 55, 0.2);
 }
 
 body {
@@ -194,7 +194,7 @@ body::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-top: 2px solid rgba(231, 25, 57, 0.35);
+  border-top: 2px solid rgba(233, 23, 55, 0.35);
   opacity: 0.4;
   pointer-events: none;
 }
@@ -321,7 +321,7 @@ body::after {
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   border: 1px solid var(--border-soft);
-  background: rgba(231, 25, 57, 0.12);
+  background: rgba(233, 23, 55, 0.12);
   color: var(--accent-primary);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -330,8 +330,8 @@ body::after {
 }
 
 .panel-chip.busy {
-  background: rgba(231, 25, 57, 0.18);
-  border-color: rgba(231, 25, 57, 0.35);
+  background: rgba(233, 23, 55, 0.18);
+  border-color: rgba(233, 23, 55, 0.35);
   color: var(--accent-primary);
 }
 
@@ -371,12 +371,12 @@ body::after {
 .control-group input[type="number"]:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(231, 25, 57, 0.2);
+  box-shadow: 0 0 0 3px rgba(233, 23, 55, 0.2);
 }
 
 .control-group select:hover:not(:disabled),
 .control-group input[type="number"]:hover:not(:disabled) {
-  border-color: rgba(231, 25, 57, 0.45);
+  border-color: rgba(233, 23, 55, 0.45);
 }
 
 .control-group select:disabled,
@@ -421,11 +421,11 @@ body::after {
 }
 
 .forecast-button:hover:not(:disabled) {
-  box-shadow: 0 18px 36px rgba(231, 25, 57, 0.35);
+  box-shadow: 0 18px 36px rgba(233, 23, 55, 0.35);
 }
 
 .forecast-button:disabled {
-  background: rgba(231, 25, 57, 0.2);
+  background: rgba(233, 23, 55, 0.2);
   color: rgba(36, 17, 17, 0.4);
   cursor: not-allowed;
   box-shadow: none;
@@ -450,7 +450,7 @@ body::after {
 .telemetry-item {
   padding: 1rem 1.1rem;
   border-radius: 14px;
-  border: 1px solid rgba(231, 25, 57, 0.15);
+  border: 1px solid rgba(233, 23, 55, 0.15);
   background: rgba(255, 255, 255, 0.88);
   display: flex;
   flex-direction: column;
@@ -493,7 +493,7 @@ body::after {
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(231, 25, 57, 0.18);
+  border-bottom: 1px solid rgba(233, 23, 55, 0.18);
 }
 
 .chart-header h2 {
@@ -548,22 +548,22 @@ body::after {
   color: var(--text-secondary);
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(231, 25, 57, 0.2);
-  background: rgba(231, 25, 57, 0.1);
+  border: 1px solid rgba(233, 23, 55, 0.2);
+  background: rgba(233, 23, 55, 0.1);
 }
 
 .error-message {
-  background: rgba(231, 25, 57, 0.12);
+  background: rgba(233, 23, 55, 0.12);
   color: var(--accent-primary);
   padding: 1.25rem;
   border-radius: 14px;
-  border: 1px solid rgba(231, 25, 57, 0.4);
+  border: 1px solid rgba(233, 23, 55, 0.4);
   margin-bottom: 1.5rem;
   box-shadow: var(--shadow-soft);
 }
 
 .error-message code {
-  background: rgba(231, 25, 57, 0.15);
+  background: rgba(233, 23, 55, 0.15);
   padding: 0.2rem 0.4rem;
   border-radius: 6px;
   font-family: 'JetBrains Mono', monospace;
@@ -609,7 +609,7 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(231, 25, 57, 0.15);
+  border-bottom: 1px solid rgba(233, 23, 55, 0.15);
 }
 
 .explanation-header h3 {
@@ -638,7 +638,7 @@ body::after {
 .explanation-section {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(231, 25, 57, 0.12);
+  border-bottom: 1px solid rgba(233, 23, 55, 0.12);
 }
 
 .explanation-section:last-child {
@@ -679,13 +679,13 @@ body::after {
 }
 
 .explanation-section .note {
-  background: rgba(231, 25, 57, 0.12);
+  background: rgba(233, 23, 55, 0.12);
   border-left: 3px solid var(--accent-primary);
   padding: 1rem;
   margin-top: 1rem;
   border-radius: 10px;
   font-size: 0.95rem;
-  border: 1px solid rgba(231, 25, 57, 0.2);
+  border: 1px solid rgba(233, 23, 55, 0.2);
   color: var(--text-primary);
 }
 
@@ -693,7 +693,7 @@ body::after {
   background: rgba(255, 255, 255, 0.9);
   padding: 1.25rem;
   border-radius: 12px;
-  border: 1px solid rgba(231, 25, 57, 0.15);
+  border: 1px solid rgba(233, 23, 55, 0.15);
 }
 
 .code-block {
@@ -706,8 +706,8 @@ body::after {
   font-size: 0.85rem;
   line-height: 1.6;
   margin-top: 0.75rem;
-  border: 1px solid rgba(231, 25, 57, 0.18);
-  box-shadow: inset 0 2px 4px rgba(231, 25, 57, 0.12);
+  border: 1px solid rgba(233, 23, 55, 0.18);
+  box-shadow: inset 0 2px 4px rgba(233, 23, 55, 0.12);
 }
 
 @keyframes fadeSlide {
@@ -784,10 +784,10 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(231, 25, 57, 0.3);
+  background: rgba(233, 23, 55, 0.3);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(231, 25, 57, 0.5);
+  background: rgba(233, 23, 55, 0.5);
 }
