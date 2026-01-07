@@ -19,9 +19,9 @@ export default function ForecastChart({ data, showBaseline = false }) {
       <div style={{ 
         padding: '40px 20px', 
         textAlign: 'center', 
-        color: '#94a3b8',
+        color: 'var(--text-secondary)',
         fontSize: '1.1rem',
-        fontFamily: 'Space Grotesk, sans-serif'
+        fontFamily: 'Chakra Petch, sans-serif'
       }}>
         No data to display
       </div>
@@ -60,7 +60,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
   return (
     <ResponsiveContainer width="100%" height={500}>
       <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 248, 255, 0.08)" opacity={0.6} />
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(231, 25, 57, 0.12)" opacity={0.6} />
         <XAxis
           dataKey="week_start"
           angle={-45}
@@ -77,10 +77,10 @@ export default function ForecastChart({ data, showBaseline = false }) {
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: 'rgba(9, 14, 26, 0.95)',
-            border: '1px solid rgba(56, 248, 255, 0.2)',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            border: '1px solid rgba(231, 25, 57, 0.25)',
             borderRadius: '8px',
-            color: '#e2e8f0',
+            color: '#1f0d0f',
             padding: '10px',
             fontFamily: 'JetBrains Mono, monospace'
           }}
@@ -104,7 +104,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
           stroke="var(--accent-primary)"
           strokeWidth={3}
           dot={false}
-          activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: '#070b14', strokeWidth: 2 }}
+          activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
           connectNulls={false}
         />
         
@@ -114,8 +114,8 @@ export default function ForecastChart({ data, showBaseline = false }) {
           stroke="var(--accent-secondary)"
           strokeWidth={3}
           strokeDasharray="8 4"
-          dot={{ r: 5, fill: 'var(--accent-secondary)', stroke: '#070b14', strokeWidth: 2 }}
-          activeDot={{ r: 7, fill: 'var(--accent-secondary)', stroke: '#070b14', strokeWidth: 2 }}
+          dot={{ r: 5, fill: 'var(--accent-secondary)', stroke: '#ffffff', strokeWidth: 2 }}
+          activeDot={{ r: 7, fill: 'var(--accent-secondary)', stroke: '#ffffff', strokeWidth: 2 }}
           connectNulls={false}
         />
         
@@ -142,7 +142,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
             markerWidth="6"
             markerHeight="6"
           >
-            <circle cx="5" cy="5" r="3" fill="#94a3b8" />
+            <circle cx="5" cy="5" r="3" fill="var(--text-muted)" />
           </marker>
         </defs>
       </LineChart>

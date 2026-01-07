@@ -386,7 +386,14 @@ function App() {
 
       <footer className="app-footer">
         <p>
-          Built with PyTorch LSTM, FastAPI, and React
+          Built with PyTorch LSTM, FastAPI, and React ·{' '}
+          <a
+            href="https://devak-mehta-recent-portfolio.vercel.app/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Devak Mehta
+          </a>
         </p>
       </footer>
     </div>

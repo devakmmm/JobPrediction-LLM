@@ -91,30 +91,6 @@ export default function ProjectExplanation({ role, location }) {
               <li><strong>vs. Naive Baseline:</strong> 57x better RMSE (58.5 vs 1.02)</li>
             </ul>
           </div>
-
-          <div className="explanation-section code-info">
-            <h4>💻 Repository Structure</h4>
-            <p>
-              All code is available in the repository with full documentation:
-            </p>
-            <pre className="code-block">
-{`/ml/
-  ├── train.py          # Model training pipeline
-  ├── models.py         # LSTM architecture
-  ├── datasets.py       # Time series preprocessing
-  └── evaluate.py       # Metrics & visualization
-
-/backend/
-  ├── app/main.py       # FastAPI server
-  ├── services/
-  │   ├── forecast.py   # Prediction logic
-  │   └── data_store.py # Data access
-  └── artifacts/        # Trained model files
-
-/frontend/
-  └── src/              # React dashboard`}
-            </pre>
-          </div>
         </div>
       )}
     </div>
