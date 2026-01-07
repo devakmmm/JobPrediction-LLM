@@ -30,7 +30,9 @@ class DataStore:
         while "__" in location_slug:
             location_slug = location_slug.replace("__", "_")
         filename = f"{role_slug}_{location_slug}.csv"
-        return self.data_dir / filename
+        csv_path = self.data_dir / filename
+        print(f"[DEBUG] Looking for data CSV at: {csv_path}")
+        return csv_path
     
     def load_series(
         self,

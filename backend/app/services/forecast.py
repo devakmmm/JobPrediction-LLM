@@ -49,6 +49,7 @@ class ForecastService:
         
         # Load from disk
         artifacts_dir = settings.get_artifacts_path(role, location)
+        print(f"[DEBUG] Looking for artifacts in: {artifacts_dir}")
         
         if not artifacts_dir.exists():
             raise FileNotFoundError(
