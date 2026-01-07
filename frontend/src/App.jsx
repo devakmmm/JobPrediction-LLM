@@ -119,6 +119,7 @@ const SAMPLE_LOCATIONS = [
 ];
 
 const FORECAST_HORIZON_WEEKS = 52;
+const FORECAST_START_MONTH = new Date(2025, 1, 1);
 const FORECAST_WINDOW_START = new Date(2025, 5, 1);
 const FORECAST_WINDOW_END = new Date(2026, 5, 30);
 
@@ -174,11 +175,12 @@ function App() {
     const parsed = new Date(`${point.week_start}T00:00:00`);
     return parsed >= FORECAST_WINDOW_START && parsed <= FORECAST_WINDOW_END;
   });
-  const chartHistory = history.filter((point) => {
+  const chartHistory = history;
+  const chartForecast = toMonthlySeries(rawForecast).filter((point) => {
     const parsed = new Date(`${point.week_start}T00:00:00`);
-    return parsed >= FORECAST_WINDOW_START && parsed <= FORECAST_WINDOW_END;
+    return parsed >= FORECAST_START_MONTH;
   });
-  const chartData = forecastData ? { ...forecastData, history: chartHistory, forecast } : null;
+  const chartData = forecastData ? { ...forecastData, history: chartHistory, forecast: chartForecast } : null;
   const historyValues = history.map((point) => point.value);
 
   const latestPoint = history[history.length - 1];

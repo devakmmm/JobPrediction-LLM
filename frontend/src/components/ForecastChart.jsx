@@ -14,6 +14,8 @@ import {
  * Chart component for displaying historical data and forecasts.
  */
 export default function ForecastChart({ data, showBaseline = false }) {
+  const countFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+
   if (!data || !data.history || !data.forecast) {
     return (
       <div style={{ 
@@ -81,7 +83,7 @@ export default function ForecastChart({ data, showBaseline = false }) {
           }}
           formatter={(value, name) => {
             if (value === null) return '';
-            return [Math.round(value * 100) / 100, name];
+            return [countFormatter.format(Math.round(value)), name];
           }}
           labelFormatter={(label) => `Month: ${label}`}
           labelStyle={{ color: 'var(--accent-primary)', fontWeight: 600 }}
@@ -96,35 +98,38 @@ export default function ForecastChart({ data, showBaseline = false }) {
           <Line
             type="monotone"
             dataKey="Historical"
-            stroke="var(--accent-primary)"
+            stroke="var(--text-primary)"
             strokeWidth={3}
             dot={false}
-            activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
+            activeDot={{ r: 6, fill: 'var(--text-primary)', stroke: '#ffffff', strokeWidth: 2 }}
             connectNulls={false}
+            name="Actual jobs"
           />
         )}
         
         <Line
           type="monotone"
           dataKey="Forecast"
-          stroke="var(--accent-secondary)"
+          stroke="var(--accent-primary)"
           strokeWidth={3}
           strokeDasharray="8 4"
-          dot={{ r: 5, fill: 'var(--accent-secondary)', stroke: '#ffffff', strokeWidth: 2 }}
-          activeDot={{ r: 7, fill: 'var(--accent-secondary)', stroke: '#ffffff', strokeWidth: 2 }}
+          dot={{ r: 5, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
+          activeDot={{ r: 7, fill: 'var(--accent-primary)', stroke: '#ffffff', strokeWidth: 2 }}
           connectNulls={false}
+          name="Forecast jobs"
         />
         
         {showBaseline && (
           <Line
             type="monotone"
             dataKey="Baseline"
-            stroke="var(--accent-tertiary)"
+            stroke="var(--text-muted)"
             strokeWidth={2.5}
             strokeDasharray="6 3"
             dot={false}
             connectNulls={false}
             opacity={0.8}
+            name="Baseline"
           />
         )}
         
