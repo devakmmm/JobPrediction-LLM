@@ -119,6 +119,7 @@ const SAMPLE_LOCATIONS = [
 ];
 
 const FORECAST_HORIZON_WEEKS = 52;
+const HISTORY_MONTHS = 24;
 const FORECAST_START_MONTH = new Date(2025, 1, 1);
 const FORECAST_WINDOW_START = new Date(2025, 5, 1);
 const FORECAST_WINDOW_END = new Date(2026, 5, 30);
@@ -170,7 +171,8 @@ function App() {
   const rawHistory = forecastData?.history ?? [];
   const rawForecast = forecastData?.forecast ?? [];
   const model = forecastData?.model ?? {};
-  const history = toMonthlySeries(rawHistory);
+  const monthlyHistory = toMonthlySeries(rawHistory);
+  const history = monthlyHistory.slice(-HISTORY_MONTHS);
   const forecast = toMonthlySeries(rawForecast).filter((point) => {
     const parsed = new Date(`${point.week_start}T00:00:00`);
     return parsed >= FORECAST_WINDOW_START && parsed <= FORECAST_WINDOW_END;
