@@ -29,8 +29,7 @@ cors_origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "http://localhost:5174",
-    # Add your deployed Vercel frontend URL below after first deploy
-    "https://jobprediction-llm-frontend.vercel.app",  # Example, update to your actual Vercel URL
+    "https://job-prediction-llm.vercel.app",
 ]
 
 # On Render, allow all origins for flexibility (or restrict to Vercel domain for security)
