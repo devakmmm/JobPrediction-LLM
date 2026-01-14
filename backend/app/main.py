@@ -30,6 +30,8 @@ cors_origins = [
     "http://localhost:5173",
     "http://localhost:5174",
     "https://job-prediction-llm.vercel.app",
+    "https://jobpredictionllm.up.railway.app",
+    "https://jobprediction-llm.up.railway.app",
 ]
 
 # On Render, allow all origins for flexibility (or restrict to Vercel domain for security)
